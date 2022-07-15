@@ -16,36 +16,67 @@
         pincel.fillRect(0, 0, 600, 400);
 
         var cor = ['blue', 'red', 'green'];
-        var indiceCorAtual = 0; // começa com o 'blue'
+        var indicaCorAtual = 0; // começa com o 'blue'
 
-        function desenhaCirculo(evento) {
+        var raio = 10; // variável que guarda o valor do raio
+        var raioFinal = 50; // variável que guarda o valor limite do raio
+        
+        var desenha = false;
 
+        function habilitaDesenhar(evento){
+            desenha = true;
+        }
+         // O 'onmousedown' é disparado toda vez que o botão esquerdo do mouse é pressionado 
+        tela.onmousedown = habilitaDesenhar;
+
+        // O 'onmouseup' é disparado toda vez que o botão esquerdo do mouse é solto
+        tela.onmouseup = function (){ // atribuindo diretamente a FUNÇÃO ANÔNIMA
+            desenha = false;
+        }
+
+        function desenhaCirculo(evento){
+            if(desenha){
+
+            // '- tela.offset' remove o espaçamento na ponta do canvas
             var x = evento.pageX - tela.offsetLeft;
             var y = evento.pageY - tela.offsetTop;
-            pincel.fillStyle = cor[indiceCorAtual];
-            pincel.beginPath();
-            pincel.arc(x, y, 10, 0, 2 * 3.14);
-            pincel.fill();
-            console.log(x + ',' + y);
+
+            pincel.fillStyle = cor[indicaCorAtual];
+            pincel.beginPath(); // 'beginPath' inicia um caminho ou redefine o caminho atual 
+            pincel.arc(x, y, raio, 0, 2 * 3.14); // 'arc' permite desenhar um arco circular
+            pincel.fill(); // preenche o elemento
+            }
+            console.log(x + ',' + y); // mostra a localização do 'x' e do 'y'
+            
+            if(evento.shiftKey && evento.altKey){
+                alert("Pressione uma tecla por vez!")
+            }
+            // indica que o 'shift' foi pressionado
+            if(evento.shiftKey && raio + 10 <= raioFinal){
+                raio = raio + 10;
+            }
+            // indica que o 'alt' foi pressionado
+            if(evento.altKey && raio - 10 >= 10){
+                raio = raio - 10;
+            }
+            // IMPORTANTE: SE VOCÊ USA LINUX, USE evento.ctrlKey no lugar de evento.altKey. Isso porque o ALT no linux ativa o menu.
+
         }
+        // onclick indica que o botão esquerdo do mouse foi pressionado
+        // tela.onclick = desenhaCirculo;
 
-        tela.onclick = desenhaCirculo;
-        
-        
-
+        // O 'onmousemove' captura o movimento do mouse
+        tela.onmousemove = desenhaCirculo;
         function mudaCor() { 
             
-            indiceCorAtual++;
-
-            if(indiceCorAtual >= cor.length){
-                indiceCorAtual = 0; // volta para a primeira cor, 'blue'
+            indicaCorAtual++; // cor atual +1
+            //length significa comprimento
+            if(indicaCorAtual >= cor.length){
+                indicaCorAtual = 0; // volta para a primeira cor, 'blue'
             }
-
-            return false; // para não exibir o menu padrão do canvas
-   
+            return false; // para não exibir o menu padrão do canvas   
         }
-
-        tela.oncontextmenu = mudaCor;
+        tela.oncontextmenu = mudaCor; // ocontextmenu indica que o botão direito do mouse foi pressionado
 
     </script>
 </body>
