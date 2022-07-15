@@ -8,19 +8,22 @@
 </head>
 <body>
     <canvas width="600" height="400"></canvas>
+    <br>
+    <br>
+    Escolha uma cor <input type="color">    
     <script>
+        var paletaCor = document.querySelector("input");
         var tela = document.querySelector('canvas');
         var pincel = tela.getContext('2d');
 
         pincel.fillStyle = 'grey';
-        pincel.fillRect(0, 0, 600, 400);
+        pincel.fillRect(0, 0, 600, 400);       
 
-        var cor = ['blue', 'red', 'green'];
-        var indicaCorAtual = 0; // começa com o 'blue'
+        // var cor = ['blue', 'red', 'green'];
+        // var indicaCorAtual = 0; // começa com o 'blue'
 
         var raio = 10; // variável que guarda o valor do raio
-        var raioFinal = 50; // variável que guarda o valor limite do raio
-        
+        var raioFinal = 50; // variável que guarda o valor limite do raio        
         var desenha = false;
 
         function habilitaDesenhar(evento){
@@ -40,8 +43,10 @@
             // '- tela.offset' remove o espaçamento na ponta do canvas
             var x = evento.pageX - tela.offsetLeft;
             var y = evento.pageY - tela.offsetTop;
-
-            pincel.fillStyle = cor[indicaCorAtual];
+            
+            // pincel.fillStyle = cor[indicaCorAtual];
+            
+            pincel.fillStyle = paletaCor.value;
             pincel.beginPath(); // 'beginPath' inicia um caminho ou redefine o caminho atual 
             pincel.arc(x, y, raio, 0, 2 * 3.14); // 'arc' permite desenhar um arco circular
             pincel.fill(); // preenche o elemento
@@ -62,9 +67,7 @@
             // IMPORTANTE: SE VOCÊ USA LINUX, USE evento.ctrlKey no lugar de evento.altKey. Isso porque o ALT no linux ativa o menu.
 
         }
-        // onclick indica que o botão esquerdo do mouse foi pressionado
-        // tela.onclick = desenhaCirculo;
-
+        
         // O 'onmousemove' captura o movimento do mouse
         tela.onmousemove = desenhaCirculo;
         function mudaCor() { 
